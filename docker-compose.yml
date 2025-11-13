@@ -1,0 +1,8 @@
+services:
+ node-dev-env:
+   image: docker.io/library/node:25
+   ports:
+     - "3000:3000"
+   volumes:
+     - ".:/host:z"
+   command: sleep inf
