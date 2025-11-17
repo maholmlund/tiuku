@@ -1,0 +1,13 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--bg2);
+  padding: 1em;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

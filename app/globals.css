@@ -1,9 +1,9 @@
 :root {
   --bg1: #f1f1f1;
-  --bg2: #ebebeb;
+  --bg2: #dfdfdf;
   --bg3: #c5c5c5;
-  --fg1: #5ccf5c;
-  --fg2: #70d170;
+  --fg1: #3caa3c;
+  --fg2: #3a9b3a;
   --text1: #111111;
   --text2: #202020;
   --text3: #242424;
@@ -11,12 +11,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg1: #0f0f0f;
-    --bg2: #1f1f1f;
-    --bg3: #222222;
+    --bg1: #151819;
+    --bg2: #1f2427;
+    --bg3: #2a3941;
     --text1: #ffffff;
-    --text2: #d8d8d8;
-    --text3: #818181;
+    --text2: #e7e7e7;
+    --text3: #636363;
   }
 
   html {
@@ -28,6 +28,11 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text1);
 }
 
 * {
