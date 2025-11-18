@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
 import AccentButton from "@/components/accentButton";
 import "./globals.css";
 import NavBar from "@/components/navbar";
+import Footer from "@/components/footer";
 import Link from "next/link";
-
-const roboto = Roboto({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Tiuku",
@@ -22,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable}`}>
+      <body>
         <NavBar>
           <Link href="/new">
             <AccentButton>
@@ -31,6 +26,7 @@ export default function RootLayout({
           </Link>
         </NavBar>
         {children}
+        <Footer />
       </body>
     </html>
   );
