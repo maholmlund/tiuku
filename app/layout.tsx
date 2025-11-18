@@ -4,11 +4,17 @@ import "./globals.css";
 import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
+import { Roboto } from "next/font/google"
 
 export const metadata: Metadata = {
   title: "Tiuku",
   description: "Tiuku",
 };
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  display: "swap"
+})
 
 export default function RootLayout({
   children,
@@ -16,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={roboto.className}>
       <body>
         <NavBar>
           <Link href="/new">
