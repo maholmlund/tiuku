@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import Link from "next/link";
 import { Roboto } from "next/font/google"
 import styles from "./layout.module.css"
+import PageContent from "@/components/pageContent";
 
 export const metadata: Metadata = {
   title: "Tiuku",
@@ -33,7 +34,9 @@ export default function RootLayout({
               </AccentButton>
             </Link>
           </NavBar>
-          {children}
+          <PageContent>
+            {children}
+          </PageContent>
         </div>
         <Footer />
       </body>

@@ -1,0 +1,30 @@
+.centered {
+  text-align: center;
+}
+
+.explanationParagraph {
+  color: var(--text2);
+  padding: 1em;
+}
+
+.card {
+  background-color: var(--bg2);
+  max-width: 20rem;
+  border: 1px solid var(--text3);
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 2em 0;
+}
+
+@media (max-width: 30rem) {
+  .cardContainer {
+    flex-direction: column;
+  }
+}
