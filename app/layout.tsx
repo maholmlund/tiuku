@@ -5,6 +5,7 @@ import NavBar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import { Roboto } from "next/font/google"
+import styles from "./layout.module.css"
 
 export const metadata: Metadata = {
   title: "Tiuku",
@@ -23,15 +24,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={roboto.className}>
-      <body>
-        <NavBar>
-          <Link href="/new">
-            <AccentButton>
-              New Poll
-            </AccentButton>
-          </Link>
-        </NavBar>
-        {children}
+      <body className={styles.body}>
+        <div>
+          <NavBar>
+            <Link href="/new">
+              <AccentButton>
+                New Poll
+              </AccentButton>
+            </Link>
+          </NavBar>
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

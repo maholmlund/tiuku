@@ -4,7 +4,7 @@ import Image from "next/image"
 
 export default function Footer() {
   return (
-    <div className={styles.footer}>
+    <footer className={styles.footer}>
       <div className={styles.footerRow}>
         <Link className={styles.footerItem} href="/">Privacy</Link>
         <Link className={styles.footerItem} href="https://github.com/maholmlund/tiuku">
@@ -15,6 +15,6 @@ export default function Footer() {
       <div className={styles.footerRow}>
         <p className={styles.footerItem}>With ❤️ from Finland</p>
       </div>
-    </div>
+    </footer>
   )
 }
