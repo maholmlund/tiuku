@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={roboto.className}>
+    <html lang="en" className={roboto.className} data-scroll-behavior="smooth">
       <body className={styles.body}>
         <div>
           <NavBar>
