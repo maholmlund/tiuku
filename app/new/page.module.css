@@ -1,0 +1,34 @@
+.table {
+  color: var(--text2);
+  margin: 1em auto;
+  text-align: left;
+  display: inline-block;
+}
+
+.bottomText {
+  color: var(--text3);
+  margin-top: 2em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.tableItem {
+  padding: 0.4em;
+}
+
+.tableHeading {
+  padding: 0.4em;
+  text-align: right;
+}
+
+.input {
+  background-color: var(--bg3);
+  padding: 0.2em;
+  border: 1px solid var(--text3);
+  border-radius: 0.4em;
+}
