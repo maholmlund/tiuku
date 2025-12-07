@@ -15,7 +15,7 @@ export default function New() {
   }
 
   const submit = async () => {
-    const result = await fetch("/api/new-poll", {
+    const result = await fetch("/api/poll", {
       method: "POST",
       body: JSON.stringify({
         title: title,
