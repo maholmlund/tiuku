@@ -8,12 +8,14 @@
 .bottomText {
   color: var(--text3);
   margin-top: 2em;
+  max-width: 30rem;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
@@ -31,4 +33,8 @@
   padding: 0.2em;
   border: 1px solid var(--text3);
   border-radius: 0.4em;
+}
+
+.successHeader {
+  margin-bottom: 1em;
 }

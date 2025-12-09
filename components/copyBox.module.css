@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.input {
+  background-color: var(--bg2);
+  font-size: medium;
+  padding-left: 0.4em;
+  padding-bottom: 0.4em;
+  padding-top: 0.4em;
+  border: 1px solid var(--text3);
+  border-radius: 0.6em 0 0 0.6em;
+}
+
+.copyButton {
+  background-color: var(--bg2);
+  color: var(--text2);
+  padding: 0.4em;
+  border: 1px solid var(--text3);
+  border-radius: 0 0.6em 0.6em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success {
+  color: var(--fg2);
+}

@@ -1,9 +1,22 @@
 "use client"
 import styles from "./page.module.css"
 import AccentButton from "@/components/accentButton"
+import CopyBox from "@/components/copyBox"
 import { useState } from "react"
 
 export default function New() {
+  const [link, setLink] = useState("");
+  if (!link) {
+    return (
+      <NewForm setLink={(l: string) => setLink(l)} />
+    )
+  }
+  return (
+    <CreationSuccessful link={link} />
+  )
+}
+
+function NewForm({ setLink }: { setLink: (link: string) => void }) {
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
@@ -24,6 +37,9 @@ export default function New() {
       })
     })
     console.log(result);
+    if (result.ok) {
+      setLink((await result.json()).link);
+    }
   }
 
   return (
@@ -74,6 +90,16 @@ export default function New() {
         </tbody>
       </table>
       <p className={styles.bottomText}>The poll and all associated data will be automatically deleted after 30 days.</p>
+    </div>
+  )
+}
+
+function CreationSuccessful({ link }: { link: string }) {
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.successHeader}>Poll Created</h1>
+      <CopyBox data={link} />
+      <p className={styles.bottomText}>Your poll was successfully created. Please save this link now since you will not be able to access it after leaving this page.</p>
     </div>
   )
 }

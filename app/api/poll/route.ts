@@ -8,7 +8,9 @@ export async function POST(req: NextRequest) {
   } catch {
     return new NextResponse("bad request", { status: 400 });
   }
-  return new NextResponse("ok", { status: 200 });
+  // save to db
+  const link = "http://localhost:3000/poll/8510f1be-e909-454a-9998-ff497daae3d1"
+  return new NextResponse(JSON.stringify({ link }), { status: 200 });
 }
 
 async function readRequest(req: NextRequest) {
