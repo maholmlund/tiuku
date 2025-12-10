@@ -6,3 +6,5 @@ services:
    volumes:
      - ".:/host:z"
    command: sleep inf
+ mongo:
+   image: docker.io/mongo:latest
