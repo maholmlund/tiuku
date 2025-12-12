@@ -2,6 +2,7 @@
 import styles from "./page.module.css"
 import AccentButton from "@/components/accentButton"
 import CopyBox from "@/components/copyBox"
+import CenteredContent from "@/components/centeredContent"
 import { useState } from "react"
 
 export default function New() {
@@ -43,7 +44,7 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
   }
 
   return (
-    <div className={styles.container}>
+    <CenteredContent>
       <h1>Create New Poll</h1>
       <table className={styles.table}>
         <tbody>
@@ -90,16 +91,16 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
         </tbody>
       </table>
       <p className={styles.bottomText}>The poll and all associated data will be automatically deleted after 30 days.</p>
-    </div>
+    </CenteredContent>
   )
 }
 
 function CreationSuccessful({ link }: { link: string }) {
   return (
-    <div className={styles.container}>
+    <CenteredContent>
       <h1 className={styles.successHeader}>Poll Created</h1>
       <CopyBox data={link} />
       <p className={styles.bottomText}>Your poll was successfully created. Please save this link now since you will not be able to access it after leaving this page.</p>
-    </div>
+    </CenteredContent>
   )
 }

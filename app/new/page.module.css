@@ -11,14 +11,6 @@
   max-width: 30rem;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .tableItem {
   padding: 0.4em;
 }
