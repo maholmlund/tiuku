@@ -1,0 +1,50 @@
+.userButton {
+  background-color: var(--bg2);
+  padding: 0.4em;
+  border: 1px solid var(--text3);
+  border-radius: 0.4em;
+  overflow: hidden;
+  width: 9rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 22rem;
+  gap: 1em;
+  margin: 1em;
+}
+
+.newInput {
+  border: none;
+  background-color: var(--bg3);
+  font-size: medium;
+  padding: 0.4em;
+  width: 100%;
+  border-radius: 0.4em 0 0 0.4em;
+}
+
+.newButton {
+  background-color: var(--bg3);
+  border: 1px solid var(--text3);
+  border-radius: 0.4em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 9rem;
+}
+
+.plusIcon {
+  padding: 0.4em;
+  border-left: 1px solid var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,7 +1,9 @@
 "use client"
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { IconPencil, IconPlus } from "@tabler/icons-react";
 import CenteredContent from "@/components/centeredContent";
+import styles from "./page.module.css"
 
 type Poll = {
   title: string,
@@ -70,11 +72,61 @@ function InvalidLink() {
 }
 
 function Poll({ poll }: { poll: Poll }) {
+  const [newUserName, setNewUserName] = useState("");
+  const { uuid } = useParams<{ uuid: string }>();
+
+  const submitNewUser = async () => {
+    const result = await fetch(
+      `/api/poll/${uuid}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          name: newUserName,
+          responses: "0".repeat(30)
+        })
+      }
+    );
+    setNewUserName("");
+    window.location.reload();
+  }
+
   return (
     <CenteredContent>
       <h1>{poll.title}</h1>
       <p>start: {poll.start}</p>
       <p>end: {poll.end}</p>
+      <div className={styles.buttonContainer}>
+        {poll.responses.map((r: any) => {
+          return <UserButton
+            onClick={_ => { }}
+            key={`button-${r.name}`}
+          >{r.name}</UserButton>;
+        })}
+        {poll.responses.length < 10 &&
+          <div className={styles.newButton}>
+            <input
+              placeholder="New user"
+              className={styles.newInput}
+              value={newUserName}
+              onChange={e => setNewUserName(e.target.value)}
+            />
+            <button
+              className={styles.plusIcon}
+              onClick={submitNewUser}
+            >
+              <IconPlus />
+            </button>
+          </div>}
+      </div>
     </CenteredContent>
+  )
+}
+
+function UserButton({ onClick, children }: { onClick: (e: any) => void, children?: ReactNode }) {
+  return (
+    <button onClick={onClick} className={styles.userButton}>
+      {children}
+      <IconPencil />
+    </button>
   )
 }
