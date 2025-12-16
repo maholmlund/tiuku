@@ -19,6 +19,7 @@
   max-width: 22rem;
   gap: 1em;
   margin: 1em;
+  margin-bottom: 6em;
 }
 
 .newInput {
@@ -47,4 +48,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.nameHeading {
+  rotate: -45deg;
+  width: 2.4rem;
+  white-space: nowrap;
+  margin-bottom: 0.6rem;
+}
+
+.checkMarkContainer {
+  color: green;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.dateHeading {
+  text-align: right;
+  font-weight: normal;
+  padding: 0.4rem;
 }

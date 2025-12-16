@@ -1,15 +1,21 @@
 "use client"
 import { useParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
-import { IconPencil, IconPlus } from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconCircleCheck } from "@tabler/icons-react";
 import CenteredContent from "@/components/centeredContent";
 import styles from "./page.module.css"
+import dayjs from "dayjs";
+
+type Response = {
+  name: string,
+  responses: string
+};
 
 type Poll = {
   title: string,
   start: string,
   end: string,
-  responses: [],
+  responses: Response[],
 };
 
 export default function PollPage() {
@@ -118,6 +124,7 @@ function Poll({ poll }: { poll: Poll }) {
             </button>
           </div>}
       </div>
+      <ResponseTable start={poll.start} end={poll.end} responses={poll.responses} />
     </CenteredContent>
   )
 }
@@ -128,5 +135,53 @@ function UserButton({ onClick, children }: { onClick: (e: any) => void, children
       {children}
       <IconPencil />
     </button>
+  )
+}
+
+function ResponseTable({ start, end, responses }:
+  {
+    start: string,
+    end: string,
+    responses: Response[]
+  }) {
+  let dates = [];
+  for (let i = 0; dayjs(start).add(i, "day").isBefore(dayjs(end).add(1)); i++) {
+    dates.push(dayjs(start).add(i, "day").format("D.M.YYYY"));
+  }
+  if (responses.length === 0) return;
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <th></th>
+          {responses.map(r => {
+            return (
+              <th key={`heading-${r.name}`} >
+                <div className={styles.nameHeading}>
+                  {r.name}
+                </div>
+              </th>
+            )
+          })}
+        </tr>
+        {dates.map((d, i) => {
+          return (
+            <tr key={`date-${d}`}>
+              <th className={styles.dateHeading}>
+                {d}
+              </th>
+              {responses.map(r => {
+                return (
+                  <td key={`${d}-${r.name}`} className={styles.checkMarkContainer}>
+                    {r.responses[i] === "1" ?
+                      <IconCircleCheck /> : ""}
+                  </td>
+                )
+              })}
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }
