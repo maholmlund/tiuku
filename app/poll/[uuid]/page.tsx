@@ -4,8 +4,11 @@ import { ReactNode, useEffect, useState } from "react";
 import { IconPencil, IconPlus, IconCircleCheck } from "@tabler/icons-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css"
+import "./rdp.css"
 import { fi } from "react-day-picker/locale"
 import CenteredContent from "@/components/centeredContent";
+import AccentButton from "@/components/accentButton";
+import NormalButton from "@/components/normalButton";
 import styles from "./page.module.css"
 import dayjs from "dayjs";
 
@@ -19,6 +22,7 @@ type Poll = {
   start: string,
   end: string,
   responses: Response[],
+  createdAt: string,
 };
 
 export default function PollPage() {
@@ -113,8 +117,6 @@ function Poll({ poll }: { poll: Poll }) {
   return (
     <CenteredContent>
       <h1>{poll.title}</h1>
-      <p>start: {poll.start}</p>
-      <p>end: {poll.end}</p>
       <div className={styles.buttonContainer}>
         {poll.responses.map((r: Response) => {
           return <UserButton
@@ -139,6 +141,7 @@ function Poll({ poll }: { poll: Poll }) {
           </div>}
       </div>
       <ResponseTable start={poll.start} end={poll.end} responses={poll.responses} />
+      <p className={styles.deletionDateText}>Poll will be deleted on {dayjs(poll.createdAt).add(31, "day").format("DD.MM.YYYY")}.</p>
     </CenteredContent>
   )
 }
@@ -252,8 +255,18 @@ function ResponseEditor({
         onSelect={setSelected}
       />
 
-      <button onClick={onClose}>Close</button>
-      <button onClick={submit}>Save</button>
+      <div className={styles.editorButtonRow}>
+        <button onClick={onClose}>
+          <NormalButton>
+            Cancel
+          </NormalButton>
+        </button>
+        <button onClick={submit}>
+          <AccentButton>
+            Save
+          </AccentButton>
+        </button>
+      </div>
     </CenteredContent>
   )
 }

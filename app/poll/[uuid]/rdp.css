@@ -1,0 +1,5 @@
+.rdp-root {
+  --rdp-accent-color: var(--accent);
+  --rdp-today-color: var(--text1);
+  --rdp-disabled-opacity: 0.3;
+}

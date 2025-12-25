@@ -68,3 +68,15 @@
   font-weight: normal;
   padding: 0.4rem;
 }
+
+.editorButtonRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 3em;
+}
+
+.deletionDateText {
+  margin-top: 3em;
+  color: var(--text3);
+}
