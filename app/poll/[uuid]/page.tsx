@@ -2,6 +2,9 @@
 import { useParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { IconPencil, IconPlus, IconCircleCheck } from "@tabler/icons-react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css"
+import { fi } from "react-day-picker/locale"
 import CenteredContent from "@/components/centeredContent";
 import styles from "./page.module.css"
 import dayjs from "dayjs";
@@ -80,6 +83,7 @@ function InvalidLink() {
 function Poll({ poll }: { poll: Poll }) {
   const [newUserName, setNewUserName] = useState("");
   const { uuid } = useParams<{ uuid: string }>();
+  const [editingResponse, setEditingResponse] = useState<Response>();
 
   const submitNewUser = async () => {
     const result = await fetch(
@@ -96,15 +100,25 @@ function Poll({ poll }: { poll: Poll }) {
     window.location.reload();
   }
 
+  if (editingResponse) {
+    return <ResponseEditor
+      response={editingResponse}
+      onClose={() => setEditingResponse(undefined)}
+      start={poll.start}
+      end={poll.end}
+      uuid={uuid}
+    />
+  }
+
   return (
     <CenteredContent>
       <h1>{poll.title}</h1>
       <p>start: {poll.start}</p>
       <p>end: {poll.end}</p>
       <div className={styles.buttonContainer}>
-        {poll.responses.map((r: any) => {
+        {poll.responses.map((r: Response) => {
           return <UserButton
-            onClick={_ => { }}
+            onClick={_ => { setEditingResponse(r) }}
             key={`button-${r.name}`}
           >{r.name}</UserButton>;
         })}
@@ -183,5 +197,63 @@ function ResponseTable({ start, end, responses }:
         })}
       </tbody>
     </table>
+  )
+}
+
+function ResponseEditor({
+  response, onClose, start, end, uuid
+}: {
+  response: Response,
+  onClose: () => void,
+  start: string,
+  end: string,
+  uuid: string,
+}) {
+  const [selected, setSelected] = useState<Date[] | undefined>([]);
+  useEffect(() => {
+    let dates = [];
+    for (let i = 0; dayjs(start).add(i, "day").isBefore(dayjs(end).add(1, "days")); i++) {
+      if (response.responses[i] === "1")
+        dates.push(new Date(dayjs(start).add(i, "days").format("YYYY-MM-DD")));
+    }
+    setSelected(dates);
+  }, []);
+
+  const submit = async () => {
+    let responses = "";
+    for (let current = dayjs(start); current.isBefore(dayjs(end).add(1, "day")); current = current.add(1, "day")) {
+      if (!!selected?.find(v => v.getTime() === new Date(current.format("YYYY-MM-DD")).getTime())) {
+        responses = responses + "1"
+      } else {
+        responses = responses + "0"
+      }
+    }
+    while (responses.length < 30) responses = responses + "0";
+    await fetch(`/api/poll/${uuid}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ name: response.name, responses: responses })
+      }
+    );
+    window.location.reload();
+  }
+
+  return (
+    <CenteredContent>
+      <h1>Editing {response.name}</h1>
+      <DayPicker
+        animate={true}
+        required={false}
+        timeZone="UTC"
+        mode="multiple"
+        locale={fi}
+        disabled={{ before: new Date(start), after: new Date(dayjs(end).add(1, "day").format("YYYY-MM-DD")) }}
+        selected={selected}
+        onSelect={setSelected}
+      />
+
+      <button onClick={onClose}>Close</button>
+      <button onClick={submit}>Save</button>
+    </CenteredContent>
   )
 }
