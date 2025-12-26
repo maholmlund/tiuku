@@ -11,7 +11,7 @@
   "dependencies": {
     "@tabler/icons-react": "^3.35.0",
     "dayjs": "^1.11.19",
-    "mongoose": "^9.0.1",
+    "mongoose": "^9.0.2",
     "next": "16.0.10",
     "react": "19.2.0",
     "react-day-picker": "^9.12.0",
