@@ -1,13 +1,11 @@
 :root {
-  --bg1: #f1f1f1;
-  --bg2: #dfdfdf;
-  --bg3: #c5c5c5;
-  --fg1: #3caa3c;
-  --fg2: #3a9b3a;
-  --text1: #111111;
-  --text2: #202020;
-  --text3: #242424;
-  --accent: #4ecfe5;
+  --bg1: #ffffff;
+  --bg2: #eef1f2;
+  --bg3: #e8eef2;
+  --text1: #0e1214;
+  --text2: #2b3236;
+  --text3: #6b747a;
+  --accent: #28dcfc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +16,7 @@
     --text1: #ffffff;
     --text2: #e7e7e7;
     --text3: #636363;
+    --accent: #4ecfe5;
   }
 
   html {

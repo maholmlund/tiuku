@@ -21,12 +21,18 @@
 }
 
 .input {
-  background-color: var(--bg3);
-  padding: 0.2em;
+  background-color: var(--bg1);
+  padding: 0.4em;
   border: 1px solid var(--text3);
   border-radius: 0.4em;
 }
 
 .successHeader {
   margin-bottom: 1em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .input {
+    background-color: var(--bg3);
+  }
 }

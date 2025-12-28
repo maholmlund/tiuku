@@ -1,6 +1,8 @@
 import Link from "next/link"
 import styles from "./footer.module.css"
 import Image from "next/image"
+import GithubLogoDark from "../public/github-logo-dark.svg";
+import GithubLogoWhite from "../public/github-logo-white.svg";
 
 export default function Footer() {
   return (
@@ -8,7 +10,10 @@ export default function Footer() {
       <div className={styles.footerRow}>
         <Link className={styles.footerItem} href="/">Privacy</Link>
         <Link className={styles.footerItem} href="https://github.com/maholmlund/tiuku">
-          <Image src="/github-mark-white.svg" width={64} height={64} alt="github logo" />
+          <picture>
+            <source srcSet="/github-logo-white.svg" media="(prefers-color-scheme: dark)" />
+            <Image src="/github-logo-dark.svg" alt="github logo" width={64} height={64} />
+          </picture>
         </Link>
         <Link className={styles.footerItem} href="/">License</Link>
       </div>

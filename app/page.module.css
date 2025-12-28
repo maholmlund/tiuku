@@ -9,12 +9,18 @@
 
 
 .card {
-  background-color: var(--bg2);
+  background-color: var(--bg1);
   max-width: 20rem;
-  border: 1px solid var(--text3);
   border-radius: 1em;
   padding: 1em;
   margin: 1em;
+  border: 1px solid var(--text3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background-color: var(--bg2);
+  }
 }
 
 .scrollDown {
