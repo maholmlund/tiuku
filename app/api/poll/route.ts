@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
 import Poll from "@/backend/models/Poll";
 import dbConnect from "@/backend/db";
+import { z } from "zod"
+
+const requestSchema = z.object({
+  title: z.string().min(1),
+  start: z.string(),
+  end: z.string(),
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,7 +25,8 @@ export async function POST(req: NextRequest) {
 }
 
 async function readRequest(req: NextRequest) {
-  const { title, start, end } = await req.json();
+  const data = await req.json();
+  const { title, start, end } = requestSchema.parse(data);
   const startDate = dayjs(start);
   const endDate = dayjs(end);
   if (!title || !startDate.isValid() || !endDate.isValid()) {

@@ -4,6 +4,11 @@ import AccentButton from "@/components/accentButton"
 import CopyBox from "@/components/copyBox"
 import CenteredContent from "@/components/centeredContent"
 import { useState } from "react"
+import { DayPicker } from "react-day-picker"
+import { fi } from "react-day-picker/locale"
+import { DateRange } from "react-day-picker"
+import "react-day-picker/style.css"
+import "@/app/rdp.css"
 
 export default function New() {
   const [link, setLink] = useState("");
@@ -19,27 +24,23 @@ export default function New() {
 
 function NewForm({ setLink }: { setLink: (link: string) => void }) {
   const [title, setTitle] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-
-  const addDate = (first: string, days: number) => {
-    let date = new Date(first);
-    date.setDate(date.getDate() + days);
-    return date.toISOString().split('T')[0];
-  }
+  const [selected, setSelected] = useState<DateRange | undefined>(undefined);
+  const [error, setError] = useState("");
 
   const submit = async () => {
     const result = await fetch("/api/poll", {
       method: "POST",
       body: JSON.stringify({
         title: title,
-        start: start,
-        end: end
+        start: selected?.from?.toISOString().split('T')[0],
+        end: selected?.to?.toISOString().split('T')[0],
       })
     })
     console.log(result);
     if (result.ok) {
       setLink((await result.json()).link);
+    } else {
+      setError("Please specify a valid name and a valid time range")
     }
   }
 
@@ -54,30 +55,21 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
               <input className={styles.input} value={title} onChange={(e) => setTitle(e.target.value)} />
             </td>
           </tr>
-          <tr>
-            <th className={styles.tableHeading}>Start Date</th>
-            <td className={styles.tableItem}>
-              <input
-                type="date"
-                className={styles.input}
-                value={start} onChange={(e) => setStart(e.target.value)}
-                min={end ? addDate(end, -30) : ""}
-                max={end}
-              />
-            </td>
-          </tr>
-          <tr>
-            <th className={styles.tableHeading}>End Date</th>
-            <td className={styles.tableItem}>
-              <input
-                type="date"
-                className={styles.input}
-                value={end} onChange={(e) => setEnd(e.target.value)}
-                min={start}
-                max={start ? addDate(start, +30) : ""}
-              />
-            </td>
-          </tr>
+        </tbody>
+      </table>
+      <DayPicker
+        animate={true}
+        required={false}
+        timeZone="UTC"
+        mode="range"
+        max={29}
+        min={1}
+        locale={fi}
+        selected={selected}
+        onSelect={setSelected}
+      />
+      <table className={styles.table}>
+        <tbody>
           <tr>
             <th></th>
             <td className={styles.tableItem}>
@@ -90,6 +82,8 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
           </tr>
         </tbody>
       </table>
+      {error &&
+        <p>{error}</p>}
       <p className={styles.bottomText}>The poll and all associated data will be automatically deleted after 30 days.</p>
     </CenteredContent>
   )

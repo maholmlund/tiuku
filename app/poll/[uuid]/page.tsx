@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { IconPencil, IconPlus, IconCircleCheck } from "@tabler/icons-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css"
-import "./rdp.css"
+import "@/app/rdp.css"
 import { fi } from "react-day-picker/locale"
 import CenteredContent from "@/components/centeredContent";
 import AccentButton from "@/components/accentButton";
@@ -250,7 +250,7 @@ function ResponseEditor({
         timeZone="UTC"
         mode="multiple"
         locale={fi}
-        disabled={{ before: new Date(start), after: new Date(dayjs(end).add(1, "day").format("YYYY-MM-DD")) }}
+        disabled={{ before: new Date(start), after: new Date(dayjs(end).format("YYYY-MM-DD")) }}
         selected={selected}
         onSelect={setSelected}
       />
