@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest, ctx: RouteContext<'/api/poll/[uuid
   try {
     const data = await req.json();
     const response = responseSchema.parse(data);
-    const index = poll.responses.map((r: any) => r.name).indexOf(response.name);
+    const index = poll.responses.map((r: z.infer<typeof responseSchema>) => r.name).indexOf(response.name);
 
     if (index === -1) {
       if (poll.responses.length >= 10) {

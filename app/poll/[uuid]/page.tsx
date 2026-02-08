@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { IconPencil, IconPlus, IconCircleCheck } from "@tabler/icons-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css"
@@ -46,7 +46,7 @@ export default function PollPage() {
     }
     fetchData();
   },
-    []);
+    [uuid]);
 
   if (error) {
     return (
@@ -78,7 +78,7 @@ function Loading() {
 function InvalidLink() {
   return (
     <CenteredContent>
-      <h1>This poll can't be read 😞</h1>
+      <h1>{`This poll can't be read 😞`}</h1>
       <p>Please check your link.</p>
     </CenteredContent>
   )
@@ -90,7 +90,7 @@ function Poll({ poll }: { poll: Poll }) {
   const [editingResponse, setEditingResponse] = useState<Response>();
 
   const submitNewUser = async () => {
-    const result = await fetch(
+    await fetch(
       `/api/poll/${uuid}`,
       {
         method: "PATCH",
@@ -120,7 +120,7 @@ function Poll({ poll }: { poll: Poll }) {
       <div className={styles.buttonContainer}>
         {poll.responses.map((r: Response) => {
           return <UserButton
-            onClick={_ => { setEditingResponse(r) }}
+            onClick={() => { setEditingResponse(r) }}
             key={`button-${r.name}`}
           >{r.name}</UserButton>;
         })}
@@ -146,7 +146,7 @@ function Poll({ poll }: { poll: Poll }) {
   )
 }
 
-function UserButton({ onClick, children }: { onClick: (e: any) => void, children?: ReactNode }) {
+function UserButton({ onClick, children }: { onClick: MouseEventHandler<HTMLButtonElement>, children?: ReactNode }) {
   return (
     <button onClick={onClick} className={styles.userButton}>
       {children}
@@ -161,7 +161,7 @@ function ResponseTable({ start, end, responses }:
     end: string,
     responses: Response[]
   }) {
-  let dates = [];
+  const dates = [];
   for (let i = 0; dayjs(start).add(i, "day").isBefore(dayjs(end).add(1)); i++) {
     dates.push(dayjs(start).add(i, "day").format("D.M.YYYY"));
   }
@@ -214,13 +214,14 @@ function ResponseEditor({
 }) {
   const [selected, setSelected] = useState<Date[] | undefined>([]);
   useEffect(() => {
-    let dates = [];
+    const dates = [];
     for (let i = 0; dayjs(start).add(i, "day").isBefore(dayjs(end).add(1, "days")); i++) {
       if (response.responses[i] === "1")
         dates.push(new Date(dayjs(start).add(i, "days").format("YYYY-MM-DD")));
     }
-    setSelected(dates);
-  }, []);
+    // according to my knowledge in this situation this is ok
+    setSelected(dates); // eslint-disable-line react-hooks/set-state-in-effect
+  }, [end, start, response.responses]);
 
   const submit = async () => {
     let responses = "";
