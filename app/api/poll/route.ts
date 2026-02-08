@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const poll = new Poll({ title, start, end, uuid });
     poll.save();
-    const link = `http://localhost:3000/poll/${uuid}`
+    const link = `${process.env.TIUKU_BASE_URL}/poll/${uuid}`
     return new NextResponse(JSON.stringify({ link }), { status: 200 });
   } catch {
     return new NextResponse("bad request", { status: 400 });
