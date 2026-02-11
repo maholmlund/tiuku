@@ -5,3 +5,6 @@ Dockerfile
 .next
 .dockerignore
 .gitignore
+tests
+LICENSE
+.github
