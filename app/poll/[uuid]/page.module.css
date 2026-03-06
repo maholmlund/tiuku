@@ -19,7 +19,6 @@
   max-width: 22rem;
   gap: 1em;
   margin: 1em;
-  margin-bottom: 6em;
 }
 
 .newInput {
@@ -79,4 +78,10 @@
 .deletionDateText {
   margin-top: 3em;
   color: var(--text3);
+}
+
+.responseContainer {
+  width: 100%;
+  overflow-x: scroll;
+  padding-top: 6rem;
 }

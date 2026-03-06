@@ -167,39 +167,41 @@ function ResponseTable({ start, end, responses }:
   }
   if (responses.length === 0) return;
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th></th>
-          {responses.map(r => {
+    <div className={styles.responseContainer}>
+      <table>
+        <tbody>
+          <tr>
+            <th></th>
+            {responses.map(r => {
+              return (
+                <th key={`heading-${r.name}`} >
+                  <div className={styles.nameHeading}>
+                    {r.name}
+                  </div>
+                </th>
+              )
+            })}
+          </tr>
+          {dates.map((d, i) => {
             return (
-              <th key={`heading-${r.name}`} >
-                <div className={styles.nameHeading}>
-                  {r.name}
-                </div>
-              </th>
+              <tr key={`date-${d}`}>
+                <th className={styles.dateHeading}>
+                  {d}
+                </th>
+                {responses.map(r => {
+                  return (
+                    <td key={`${d}-${r.name}`} className={styles.checkMarkContainer}>
+                      {r.responses[i] === "1" ?
+                        <IconCircleCheck /> : ""}
+                    </td>
+                  )
+                })}
+              </tr>
             )
           })}
-        </tr>
-        {dates.map((d, i) => {
-          return (
-            <tr key={`date-${d}`}>
-              <th className={styles.dateHeading}>
-                {d}
-              </th>
-              {responses.map(r => {
-                return (
-                  <td key={`${d}-${r.name}`} className={styles.checkMarkContainer}>
-                    {r.responses[i] === "1" ?
-                      <IconCircleCheck /> : ""}
-                  </td>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   )
 }
 
