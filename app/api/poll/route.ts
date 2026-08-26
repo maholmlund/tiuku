@@ -1,46 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import dayjs from "dayjs";
-import Poll from "@/backend/models/Poll";
-import dbConnect from "@/backend/db";
+import Poll from "@/lib/models/Poll";
+import dbConnect from "@/lib/db";
 import { z } from "zod"
 
+export const MAX_POLL_SIZE = 4 * 1024;
+
 const requestSchema = z.object({
-  title: z.string().min(1),
-  start: z.string(),
-  end: z.string(),
+  encryptedData: z.string().max(MAX_POLL_SIZE),
 });
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, start, end } = await readRequest(req);
+    const data = await req.json();
+    const { encryptedData } = requestSchema.parse(data);
     const uuid = crypto.randomUUID();
     await dbConnect();
-    const poll = new Poll({ title, start, end, uuid });
+    const poll = new Poll({ uuid, encryptedData });
     poll.save();
     const link = `${process.env.TIUKU_BASE_URL}/poll/${uuid}`
     return new NextResponse(JSON.stringify({ link }), { status: 200 });
   } catch {
     return new NextResponse("bad request", { status: 400 });
   }
-}
-
-async function readRequest(req: NextRequest) {
-  const data = await req.json();
-  const { title, start, end } = requestSchema.parse(data);
-  const startDate = dayjs(start);
-  const endDate = dayjs(end);
-  if (!title || !startDate.isValid() || !endDate.isValid()) {
-    throw (1);
-  }
-  if (startDate.add(30, "day") < endDate || endDate < startDate) {
-    throw (1);
-  }
-  if (title.length > 100) {
-    throw (1);
-  }
-  return {
-    title,
-    start,
-    end
-  };
 }

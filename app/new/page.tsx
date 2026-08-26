@@ -7,6 +7,7 @@ import { useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { fi } from "react-day-picker/locale"
 import { DateRange } from "react-day-picker"
+import { initialize, getEncryptedData } from "@/lib/client-poll"
 import "react-day-picker/style.css"
 import "@/app/rdp.css"
 
@@ -28,18 +29,19 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
   const [error, setError] = useState("");
 
   const submit = async () => {
+    // TODO: validate title and selected time range
+    const poll = await initialize(title, selected?.from?.toISOString() ?? "", selected?.to?.toISOString() ?? "");
     const result = await fetch("/api/poll", {
       method: "POST",
       body: JSON.stringify({
-        title: title,
-        start: selected?.from?.toISOString().split('T')[0],
-        end: selected?.to?.toISOString().split('T')[0],
-      })
+        encryptedData: await getEncryptedData(poll),
+      }),
     })
     console.log(result);
     if (result.ok) {
-      setLink((await result.json()).link);
+      setLink(`${(await result.json()).link}#${Buffer.from(await crypto.subtle.exportKey("raw", poll.key)).toHex()}`);
     } else {
+      // TODO: change this
       setError("Please specify a valid name and a valid time range")
     }
   }
