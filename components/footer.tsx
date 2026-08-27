@@ -10,7 +10,7 @@ export default function Footer() {
         <Link className={styles.footerItem} href="https://github.com/maholmlund/tiuku">
           <picture>
             <source srcSet="/github-logo-white.svg" media="(prefers-color-scheme: dark)" />
-            <Image src="/github-logo-dark.svg" alt="github logo" width={64} height={64} />
+            <Image src="/github-logo-dark.svg" alt="github logo" width={64} height={64} loading="eager" />
           </picture>
         </Link>
         <Link className={styles.footerItem} href="https://github.com/maholmlund/tiuku/blob/main/LICENSE">License</Link>
