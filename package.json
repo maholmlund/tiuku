@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.46.0",
-    "dayjs": "^1.11.19",
+    "dayjs": "^1.11.23",
     "mongoose": "^9.9.3",
     "next": "16.3.2",
-    "react": "19.2.4",
+    "react": "19.2.8",
     "react-day-picker": "^9.14.0",
-    "react-dom": "19.2.4",
+    "react-dom": "19.2.8",
     "zod": "^4.4.3"
   },
   "devDependencies": {
