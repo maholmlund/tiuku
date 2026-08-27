@@ -54,9 +54,14 @@ export default function PollPage() {
         setError("something went wrong");
         return;
       }
-      const data = await result.json();
-      const decodedPoll = await decode(data.encryptedData, data.createdAt, window.location.hash.slice(1) ?? "", uuid);
-      setPoll(decodedPoll);
+      try {
+        const data = await result.json();
+        const decodedPoll = await decode(data.encryptedData, data.createdAt, window.location.hash.slice(1) ?? "", uuid);
+        setPoll(decodedPoll);
+      } catch (error) {
+        console.error("Error parsing poll data:", error);
+        setError("There seems to be something wrong with this poll. Please check your link.");
+      }
     }
     fetchData();
   },
