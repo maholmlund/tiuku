@@ -6,7 +6,7 @@ import { MAX_POLL_SIZE } from "../route";
 
 export async function GET(_req: NextRequest, ctx: RouteContext<'/api/poll/[uuid]'>) {
   const { uuid } = await ctx.params;
-  dbConnect();
+  await dbConnect();
   const poll = await Poll.findOne({ uuid }, '-_id uuid encryptedData createdAt');
   if (poll === null) {
     return new NextResponse("not found", { status: 404 });
@@ -21,7 +21,7 @@ const requestSchema = z.object({
 
 export async function PATCH(req: NextRequest, ctx: RouteContext<'/api/poll/[uuid]'>) {
   const { uuid } = await ctx.params;
-  dbConnect();
+  await dbConnect();
   const poll = await Poll.findOne({ uuid });
   if (poll === null) {
     return new NextResponse("not found", { status: 404 });

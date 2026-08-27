@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const uuid = crypto.randomUUID();
     await dbConnect();
     const poll = new Poll({ uuid, encryptedData });
-    poll.save();
+    await poll.save();
     const link = `${process.env.TIUKU_BASE_URL}/poll/${uuid}`
     return new NextResponse(JSON.stringify({ link }), { status: 200 });
   } catch {
