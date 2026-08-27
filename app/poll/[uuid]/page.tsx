@@ -15,6 +15,12 @@ import dayjs from "dayjs";
 
 const MAX_RETRIES = 4;
 
+function validateNewUserName(name: string, responses: Map<string, boolean[]>): string | undefined {
+  const normalizedName = name.trim()
+  if (!normalizedName) return "Please specify a name."
+  if (responses.has(normalizedName)) return "That name is already in use."
+}
+
 async function sendUpdate(data: PollData) {
   for (let i = 0; i < MAX_RETRIES; i++) {
     const patchMessage = await getPatchMessage(data);
@@ -94,13 +100,22 @@ function InvalidLink() {
 
 function Poll({ poll }: { poll: PollData }) {
   const [newUserName, setNewUserName] = useState("");
+  const [error, setError] = useState("");
   const { uuid } = useParams<{ uuid: string }>();
   const [editingUser, setEditingUser] = useState<string>();
 
   const submitNewUser = async () => {
+    const normalizedName = newUserName.trim()
+    const validationError = validateNewUserName(normalizedName, poll.responses)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
     let data = structuredClone(poll);
-    data.responses.set(newUserName, Array.from({ length: 30 }, () => false));
+    data.responses.set(normalizedName, Array.from({ length: 30 }, () => false));
     await sendUpdate(data);
+    setError("");
     setNewUserName("");
     window.location.reload();
   }
@@ -139,6 +154,7 @@ function Poll({ poll }: { poll: PollData }) {
             </button>
           </div>}
       </div>
+      {error && <p>{error}</p>}
       <ResponseTable start={poll.startDate} end={poll.endDate} responses={poll.responses} />
       <p className={styles.deletionDateText}>Poll will be deleted on {dayjs(poll.createdAt).add(31, "day").format("DD.MM.YYYY")}.</p>
     </CenteredContent>

@@ -7,9 +7,22 @@ import { useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { fi } from "react-day-picker/locale"
 import { DateRange } from "react-day-picker"
+import dayjs from "dayjs"
 import { initialize, getEncryptedData } from "@/lib/client-poll"
 import "react-day-picker/style.css"
 import "@/app/rdp.css"
+
+function validatePollInput(title: string, selected: DateRange | undefined): string | undefined {
+  if (!title.trim() || !selected?.from || !selected.to) {
+    return "Please specify a valid name and a valid time range."
+  }
+
+  const startDate = dayjs(selected.from)
+  const endDate = dayjs(selected.to)
+  if (endDate.isBefore(startDate) || endDate.isAfter(startDate.add(30, "day"))) {
+    return "Please specify a valid name and a valid time range."
+  }
+}
 
 export default function New() {
   const [link, setLink] = useState("");
@@ -29,20 +42,24 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
   const [error, setError] = useState("");
 
   const submit = async () => {
-    // TODO: validate title and selected time range
-    const poll = await initialize(title, selected?.from?.toISOString() ?? "", selected?.to?.toISOString() ?? "");
+    const validationError = validatePollInput(title, selected)
+    if (validationError) {
+      setError(validationError)
+      return;
+    }
+    const startDate = dayjs(selected?.from)
+    const endDate = dayjs(selected?.to)
+    const poll = await initialize(title, startDate.toISOString(), endDate.toISOString());
     const result = await fetch("/api/poll", {
       method: "POST",
       body: JSON.stringify({
         encryptedData: await getEncryptedData(poll),
       }),
     })
-    console.log(result);
     if (result.ok) {
       setLink(`${(await result.json()).link}#${Buffer.from(await crypto.subtle.exportKey("raw", poll.key)).toString('hex')}`);
     } else {
-      // TODO: change this
-      setError("Please specify a valid name and a valid time range")
+      setError("Something went wrong. Please try again later.");
     }
   }
 
