@@ -39,7 +39,7 @@ function NewForm({ setLink }: { setLink: (link: string) => void }) {
     })
     console.log(result);
     if (result.ok) {
-      setLink(`${(await result.json()).link}#${Buffer.from(await crypto.subtle.exportKey("raw", poll.key)).toHex()}`);
+      setLink(`${(await result.json()).link}#${Buffer.from(await crypto.subtle.exportKey("raw", poll.key)).toString('hex')}`);
     } else {
       // TODO: change this
       setError("Please specify a valid name and a valid time range")

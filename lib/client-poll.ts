@@ -57,7 +57,7 @@ export async function decode(encryptedData: string, createdAt: string, key: stri
     createdAt,
     _oldResponses: new Map(responses),
     uuid: uuid,
-    _oldSha256: Buffer.from(await crypto.subtle.digest("SHA-256", Buffer.from(encryptedData, "base64"))).toHex(),
+    _oldSha256: Buffer.from(await crypto.subtle.digest("SHA-256", Buffer.from(encryptedData, "base64"))).toString('hex'),
   };
   return pollData;
 }
@@ -79,7 +79,7 @@ export async function getPatchMessage(data: PollData): Promise<string> {
 }
 
 export async function rebase(data: PollData, encryptedData: string): Promise<void> {
-  data._oldSha256 = Buffer.from(await crypto.subtle.digest("SHA-256", Buffer.from(encryptedData, "base64"))).toHex();
+  data._oldSha256 = Buffer.from(await crypto.subtle.digest("SHA-256", Buffer.from(encryptedData, "base64"))).toString('hex');
   const decodedData = await _decrypt(encryptedData, data.key);
 
   let changedResponses = new Map<string, boolean[]>();
@@ -129,7 +129,7 @@ function _encrypt(data: SecretData, key: CryptoKey): Promise<string> {
     key,
     new TextEncoder().encode(JSON.stringify(data, _jsonReplacer))
   ).then((ciphertext) => {
-    return Buffer.from(iv).toBase64() + Buffer.from(ciphertext).toBase64();
+    return Buffer.from(iv).toString('base64') + Buffer.from(ciphertext).toString('base64');
   });
 }
 

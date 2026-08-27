@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, ctx: RouteContext<'/api/poll/[uuid
     const data = await req.json();
     const response = requestSchema.parse(data);
     const sha256 = crypto.subtle.digest("SHA-256", Buffer.from(poll.encryptedData, "base64"));
-    if (response.sha256 !== Buffer.from(await sha256).toHex()) {
+    if (response.sha256 !== Buffer.from(await sha256).toString('hex')) {
       return new NextResponse("invalid hash", { status: 409 });
     }
     poll.encryptedData = response.newData;
