@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.left {
+  text-align: left;
+}
+
 .explanationParagraph {
   color: var(--text2);
   padding: 1em;
@@ -10,7 +14,7 @@
 
 .card {
   background-color: var(--bg1);
-  max-width: 20rem;
+  width: 240px;
   border-radius: 1em;
   padding: 1em;
   margin: 1em;
@@ -23,30 +27,18 @@
   }
 }
 
-.scrollDown {
-  display: none;
-}
-
 .cardContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin: 2em 0;
+  text-align: center;
 }
 
 @media (max-width: 30rem) {
   .cardContainer {
     flex-direction: column;
-  }
-
-  .landingSection {
-    margin-top: 6em;
-    height: 100vh;
-  }
-
-  .scrollDown {
-    margin-top: 6em;
-    display: inline-block;
+    align-items: center;
   }
 }
 
