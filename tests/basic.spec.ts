@@ -12,7 +12,7 @@ test('create-poll', async ({ page }) => {
   await page.getByRole('button').nth(8).click();
   await page.getByRole('button', { name: 'Create' }).click();
   await expect(page.getByRole('heading', { name: 'Poll Created' })).toBeVisible();
-  let poll_link = page.getByRole('textbox');
+  const poll_link = page.getByRole('textbox');
   const link = await poll_link.inputValue();
   await page.goto(link);
   await expect(page.getByRole('heading', { name: 'baba' })).toBeVisible();

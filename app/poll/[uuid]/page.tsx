@@ -106,7 +106,6 @@ function InvalidLink() {
 function Poll({ poll }: { poll: PollData }) {
   const [newUserName, setNewUserName] = useState("");
   const [error, setError] = useState("");
-  const { uuid } = useParams<{ uuid: string }>();
   const [editingUser, setEditingUser] = useState<string>();
 
   const submitNewUser = async () => {
@@ -117,7 +116,7 @@ function Poll({ poll }: { poll: PollData }) {
       return
     }
 
-    let data = structuredClone(poll);
+    const data = structuredClone(poll);
     data.responses.set(normalizedName, Array.from({ length: 30 }, () => false));
     await sendUpdate(data);
     setError("");
@@ -192,7 +191,7 @@ function ResponseTable({ start, end, responses }:
         <tbody>
           <tr>
             <th></th>
-            {Array.from(responses.entries()).map(([name, responses]) => {
+            {Array.from(responses.keys()).map(name => {
               return (
                 <th key={`heading-${name}`} >
                   <div className={styles.nameHeading}>
@@ -244,7 +243,7 @@ function ResponseEditor({
   }, [pollData, user]);
 
   const submit = async () => {
-    let responses = [];
+    const responses = [];
     for (let current = dayjs(pollData.startDate); current.isBefore(dayjs(pollData.endDate).add(1, "day")); current = current.add(1, "day")) {
       if (!!selected?.find(v => v.getTime() === new Date(current.format("YYYY-MM-DD")).getTime())) {
         responses.push(true);

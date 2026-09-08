@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import styles from "./page.module.css"
 import AccentButton from "@/components/accentButton";
 import Link from "next/link";
-import { IconChevronDown } from "@tabler/icons-react";
 
 export default function Home() {
   return (

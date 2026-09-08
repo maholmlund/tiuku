@@ -1,4 +1,3 @@
-import Link from "next/link"
 import styles from "./navbar.module.css"
 import { ReactNode } from "react"
 
@@ -7,7 +6,7 @@ export default function NavBar({ children }: { children?: ReactNode }) {
   // navigating from the front page to the poll page and then back to the front page.
   return (
     <nav className={styles.navbar}>
-      <a href="/">
+      <a href="/"> { /* eslint-disable-line @next/next/no-html-link-for-pages */}
         <h1>Tiuku</h1>
       </a>
       <div className={styles.linkGroup}>

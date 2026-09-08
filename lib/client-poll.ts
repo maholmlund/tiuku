@@ -82,7 +82,7 @@ export async function rebase(data: PollData, encryptedData: string): Promise<voi
   data._oldSha256 = Buffer.from(await crypto.subtle.digest("SHA-256", Buffer.from(encryptedData, "base64"))).toString('hex');
   const decodedData = await _decrypt(encryptedData, data.key);
 
-  let changedResponses = new Map<string, boolean[]>();
+  const changedResponses = new Map<string, boolean[]>();
   const union = new Map([...data._oldResponses.entries(), ...data.responses.entries()]);
   console.log("union", union);
   console.log("old", data._oldResponses);
@@ -94,7 +94,7 @@ export async function rebase(data: PollData, encryptedData: string): Promise<voi
     }
   });
   console.log("changed", changedResponses);
-  let newResponses = decodedData.responses;
+  const newResponses = decodedData.responses;
   changedResponses.forEach((value, key) => {
     // The entry was modified
     if (data.responses.has(key) && data._oldResponses.has(key)) {
