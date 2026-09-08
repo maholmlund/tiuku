@@ -11,8 +11,8 @@
   "dependencies": {
     "@tabler/icons-react": "^3.46.0",
     "dayjs": "^1.11.23",
-    "mongoose": "^9.9.3",
-    "next": "16.3.2",
+    "mongoose": "^9.9.5",
+    "next": "16.3.4",
     "react": "19.2.8",
     "react-day-picker": "^9.14.0",
     "react-dom": "19.2.8",
@@ -24,7 +24,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^10",
-    "eslint-config-next": "16.3.2",
+    "eslint-config-next": "16.3.4",
     "typescript": "^5"
   }
 }
