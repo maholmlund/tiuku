@@ -9,4 +9,6 @@ updates:
         update-types: [ "patch" ]
       minor-updates:
         update-types: [ "minor" ]
+      major-updates:
+        update-types: [ "major" ]
 
