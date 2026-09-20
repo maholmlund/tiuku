@@ -18,6 +18,9 @@ export default function Footer() {
       <div className={styles.footerRow}>
         <p className={styles.footerItem}>With ❤️ from Finland</p>
       </div>
-    </footer>
+      <div className={styles.footerRow}>
+        <i className={styles.version}>v.{process.env.NEXT_PUBLIC_COMMIT}</i>
+      </div>
+    </footer >
   )
 }

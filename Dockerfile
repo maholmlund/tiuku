@@ -1,3 +1,5 @@
+ARG NEXT_PUBLIC_COMMIT="undefined-version"
+
 FROM node:25-slim AS base
 
 FROM base AS deps
@@ -9,6 +11,7 @@ RUN npm ci
 
 FROM base AS builder
 WORKDIR /app
+ARG NEXT_PUBLIC_COMMIT
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

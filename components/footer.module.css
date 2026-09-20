@@ -12,9 +12,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin: 16px 0;
 }
 
 .footerItem {
-  margin: 1.4em;
   font-weight: bold;
+  margin: 0 1.4em;
+}
+
+.version {
+  color: var(--text2);
 }
