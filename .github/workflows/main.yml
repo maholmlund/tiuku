@@ -37,7 +37,7 @@ jobs:
           context: .
           push: false
           load: true
-          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:latest,ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_COMMIT=${{ env.NEXT_PUBLIC_COMMIT }}
           cache-to: type=gha
@@ -63,7 +63,22 @@ jobs:
 
       - name: Push Docker image
         if: success() && github.ref == 'refs/heads/main'
-        run: docker push ghcr.io/${{ env.IMAGE_NAME }}:latest
+        run: docker push ghcr.io/${{ env.IMAGE_NAME }} --all-tags
+
+      - name: Log in to Azure
+        if: success() && github.ref == 'refs/heads/main'
+        uses: azure/login@v3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Container App
+        if: success() && github.ref == 'refs/heads/main'
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          containerAppName: tiuku
+          resourceGroup: tiuku
+          imageToDeploy: ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          registryUrl: ghcr.io
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
