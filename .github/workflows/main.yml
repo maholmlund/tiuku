@@ -1,22 +1,28 @@
-name: Build and Test
+name: Build, Test and Deploy
 on:
   push:
-    branches:
-        - main
   pull_request:
-    branches:
-        - main
+env:
+  IMAGE_NAME: ${{ github.repository }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    env:
-      IMAGE_NAME: ${{ github.repository }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: './package.json'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -42,7 +48,7 @@ jobs:
             NEXT_PUBLIC_COMMIT=${{ env.NEXT_PUBLIC_COMMIT }}
           cache-to: type=gha
           cache-from: type=gha
- 
+
       - name: Run Docker container
         run: |
           docker compose -f docker-compose.ci.yml up -d
@@ -52,9 +58,16 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test 
-      
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
       - name: Login to GitHub Container Registry
-        if: success() && github.ref == 'refs/heads/main'
+        if: success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -62,27 +75,26 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image
-        if: success() && github.ref == 'refs/heads/main'
+        if: success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: docker push ghcr.io/${{ env.IMAGE_NAME }} --all-tags
 
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build-and-test
+    permissions:
+      contents: read
+      packages: write
+    steps:
       - name: Log in to Azure
-        if: success() && github.ref == 'refs/heads/main'
         uses: azure/login@v3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Container App
-        if: success() && github.ref == 'refs/heads/main'
-        uses: azure/container-apps-deploy-action@v1
+        uses: azure/container-apps-deploy-action@v2
         with:
           containerAppName: tiuku
           resourceGroup: tiuku
           imageToDeploy: ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
           registryUrl: ghcr.io
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
